@@ -1,5 +1,6 @@
 # work in progress
-## Working with dockerfiles and docker-compose, just need to docker-compose to run
+
+### Working with dockerfiles and docker-compose, just need to docker-compose build and run
 
 a web page to create summaries of text
 functionalities planed:
