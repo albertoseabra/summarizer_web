@@ -1,12 +1,9 @@
 from flask import Flask, jsonify, make_response, render_template, request, current_app
-import requests
 import pymongo
 
 from summarizer import Summarizer
 
 app = Flask(__name__)
-
-# model = pickle.load(open('model.pkl', 'rb'))
 
 
 @app.route('/')
@@ -17,6 +14,38 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    errors = []
+    results = ""
+    url = ""
+    text = ""
+    summary = []
+    key_words = []
+    summary_method = "textrank_tfidf"
+    if request.method == "POST":
+        # get url that the user has entered
+        url = request.form['url']
+        text = request.form["message"]
+        summary_method = request.form["summary_method"]
+        if url:
+            results = "detected URL: {}".format(url)
+            summarizer = Summarizer(url=url)
+            if summary_method == "textrank_tfidf":
+                results = summarizer.textrank_summary()
+            elif summary_method == "embeddings":
+                results = summarizer.doc_embedding_summary()
+            elif summary_method == "clustering":
+                results = summarizer.clustering_summary()
+
+        if text:
+            results += "detected text: {}".format(text)
+        if (not url) & (not text):
+            errors.append("You need to provide an URL or a text to summarize")
+
+    return render_template('index.html', errors=errors, results=results, url=url, text=text)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -36,22 +65,6 @@ def contact():
         email_sent = True
 
     return render_template("contact.html", email_sent=email_sent)
-
-
-@app.route('/index', methods=['GET', 'POST'])
-def index():
-    errors = []
-    results = {}
-    if request.method == "POST":
-        # get url that the user has entered
-        try:
-            url = request.form['url']
-            text = request.form["message"]
-        except:
-            errors.append(
-                "You need to provide an URL or a text to summarize")
-
-    return render_template('index.html', errors=errors, results=results)
 
 
 @app.errorhandler(404)

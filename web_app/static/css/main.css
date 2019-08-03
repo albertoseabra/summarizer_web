@@ -5,3 +5,6 @@
 .nowrap { white-space: nowrap; }
 
 /* Your customizations here */
+.test label {
+  font-size: 20px;
+}
