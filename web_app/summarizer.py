@@ -132,7 +132,7 @@ class Summarizer:
 
         return graph
 
-    def textrank_summary(self, number_of_sentences, ):
+    def textrank_summary(self, number_of_sentences):
         """
         Calls the function create_graph to create the graph and calculates the Pagerank value
         of the nodes. Sorts the sentences in descending order of importance

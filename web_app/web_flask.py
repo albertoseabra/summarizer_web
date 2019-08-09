@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, render_template, request, current_app
+from flask import Flask, jsonify, make_response, render_template, request, current_app, redirect, url_for
 import pymongo
 
 from summarizer import Summarizer
@@ -24,28 +24,45 @@ def index():
     text = ""
     summary = []
     key_words = []
-    summary_method = "textrank_tfidf"
+    summary_method = "embeddings"
     if request.method == "POST":
         # get url that the user has entered
         url = request.form['url']
         text = request.form["message"]
         summary_method = request.form["summary_method"]
-        if url:
-            results = "detected URL: {}".format(url)
-            summarizer = Summarizer(url=url)
-            if summary_method == "textrank_tfidf":
-                results = summarizer.textrank_summary()
-            elif summary_method == "embeddings":
-                results = summarizer.doc_embedding_summary()
-            elif summary_method == "clustering":
-                results = summarizer.clustering_summary()
-
-        if text:
-            results += "detected text: {}".format(text)
+        try:
+            number_sentences = int(request.form["number_sentences"])
+        except ValueError:
+            number_sentences = 3
         if (not url) & (not text):
             errors.append("You need to provide an URL or a text to summarize")
+            return render_template('index.html', errors=errors, results=results, url=url, text=text)
+
+        else:
+            if url:
+                results = "detected URL: {}".format(url)
+                summarizer = Summarizer(url=url)
+            elif text:
+                results += "detected text: {}".format(text)
+                summarizer = Summarizer(text=text)
+
+            if summary_method == "textrank_tfidf":
+                results = summarizer.textrank_summary(number_sentences)
+            elif summary_method == "embeddings":
+                results = summarizer.doc_embedding_summary(number_sentences)
+            elif summary_method == "clustering":
+                results = summarizer.clustering_summary(number_sentences)
+
+            if summarizer.title:
+                title = summarizer.title
+            return render_template("summary_result.html", title=title, results=results)
 
     return render_template('index.html', errors=errors, results=results, url=url, text=text)
+
+
+# @app.route('/result', methods=['GET', 'POST'])
+# def summary_result():
+#     return render_template('index.html', errors=errors, results=results, url=url, text=text)
 
 
 @app.route('/contact', methods=['GET', 'POST'])

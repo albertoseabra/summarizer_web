@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div>
+        {% if title %}
+        <h2>{{ title }}</h2>
+        {% else %}
+        <h2>No Title</h2>
+        {% endif %}
+    </div>
+    <body>
+        {% for res in results %}
+        <div><p> <b>{{ res }}</b></p></div>
+        {% endfor %}
+    </body>
+
+{% endblock content %}

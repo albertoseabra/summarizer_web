@@ -16,15 +16,23 @@
           <div class="test">
            <font color="DarkOrange">
             <h4>
-              Choose which method you want to use, depending of the text they might return very different results
+              Choose which method you want to use, depending of the text they might return different results
             </h4>
              </font>
-          <label for="textrank_tfidf">TextRank with TF-IDF</label>
-          <input type="radio" name="summary_method" id="textrank_tfidf" value="textrank_tfidf" checked="checked"><br>
           <label for="embeddings">Embeddings</label>
-          <input type="radio" name="summary_method" id="embeddings" value="embeddings"><br>
+          <input type="radio" name="summary_method" id="embeddings" value="embeddings" checked="checked"><br>
           <label for="clustering">Clustering</label>
           <input type="radio" name="summary_method" id="clustering" value="clustering"><br>
+          <label for="textrank_tfidf">TextRank with TF-IDF</label>
+          <input type="radio" name="summary_method" id="textrank_tfidf" value="textrank_tfidf"><br>
+              <font color="DarkOrange">
+            <h4>
+              How many sentences do you want in the resulting summary?
+            </h4>
+             </font>
+              <div class="form-group">
+          <input type="number" name="number_sentences" class="form-control" id="number_sentences" placeholder="3" min="1" max="50" style="max-width: 100px;">
+        </div>
           </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
