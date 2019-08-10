@@ -15,11 +15,10 @@ class Summarizer:
         self.url = url
         if text:
             self.text = text
-            # self.paragraphs = [line for line in self.text.split('\n') if len(line) > 10]
+            self.title = ""
 
         elif url is not None:
             self.text, self.title = self.scrape_website()
-            # self.paragraphs = [line for line in self.text.split('\n') if len(line) > 10]
 
         else:
             raise Exception('You need a text or a url to summarize')

@@ -64,10 +64,7 @@ def index():
 
             key_words = summarizer.key_words(5)
 
-            if summarizer.title:
-                title = summarizer.title
-            else:
-                title = ""
+            title = summarizer.title
 
             # text_to_save = TextToStore(text=text,
             #                            title=title,
