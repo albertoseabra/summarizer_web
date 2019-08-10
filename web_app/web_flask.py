@@ -66,6 +66,7 @@ def index():
 
             title = summarizer.title
 
+
             # text_to_save = TextToStore(text=text,
             #                            title=title,
             #                            summary=summary,

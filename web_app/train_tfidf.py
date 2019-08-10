@@ -23,12 +23,12 @@ def save_tfidf_tokenizer(tokenizer, path):
 
 
 def main(tokenizer_path, max_words):
-    # corpus = ["you need a corpus to train it", "or better, you need a list of corpus to train", "just one more"]
+    corpus = ["you need a corpus to train it", "or better, you need a list of corpus to train", "just one more"]
 
-    df = pd.read_csv(r'../data/data.csv', encoding='cp1252')
-    corpus = df.text.values
+    # df = pd.read_csv(r'../data/data.csv', encoding='cp1252')
+    # corpus = df.text.values
     tf = train_tfidf(corpus, max_words)
-    save_tfidf_tokenizer(tokenizer=tf, path=tokenizer_path)
+    # save_tfidf_tokenizer(tokenizer=tf, path=tokenizer_path)
 
 
 if __name__ == '__main__':

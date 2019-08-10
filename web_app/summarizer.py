@@ -151,7 +151,7 @@ class Summarizer:
             self.sentence_weights.append(v)
 
         # sorting by Rank value
-        order = np.array(self.sentence_weights).argsort()[::-1]
+        order = np.array(self.sentence_weights).argsort()[::-1][:number_of_sentences]
 
         return [self.sentences[i] for i in order]
 
