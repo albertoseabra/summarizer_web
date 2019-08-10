@@ -9,7 +9,7 @@ nlp = spacy.load("en_core_web_md")
 
 
 class Summarizer:
-    def __init__(self, url=None, text=None):
+    def __init__(self, tfidf_tokenizer, url=None, text=None):
         self.url = url
         if text:
             self.text = text
@@ -25,7 +25,7 @@ class Summarizer:
         # ignore very short sentences, its very likely its because of some error scrapping the text
         self.sentences = [sentence for sentence in list(self.embedded.sents) if len(sentence) > 10]
         self.sentence_weights = []
-        # self.tfidf_vector = tfidf_vector
+        self.tfidf_tokenizer = tfidf_tokenizer
 
     def scrape_website(self):
 
@@ -161,13 +161,13 @@ class Summarizer:
         # stemming and transforming the text first
         tokens = tokenizing_spacy(self.text)
 
-        vector = self.tfidf_vector.transform([tokens])
+        vector = self.tfidf_tokenizer.transform([tokens])
 
         print('The top Words are: ')
         # gets the important stemmed words and find those words in the text to print the original
         words = []
         for index in vector.toarray()[0].argsort()[::-1][:n_words]:
-            words.append(self.tfidf_vector.get_feature_names()[index])
+            words.append(self.tfidf_tokenizer.get_feature_names()[index])
 
         #     indices = re.search('{}\S*'.format(str(stemmed_word)), self.text.lower()).span()
         #     print(' {};'.format(self.text[indices[0]:indices[1]]), end=' ')

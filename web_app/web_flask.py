@@ -1,9 +1,15 @@
 from flask import Flask, jsonify, make_response, render_template, request, current_app, redirect, url_for
+import pickle
 import pymongo
 
 from summarizer import Summarizer
+import config_file
 
 app = Flask(__name__)
+app.config.from_object(config_file.DevelopmentConfig())
+
+with open(app.config["TFIDF_TOKENIZER"], "rb") as f:
+    tfidf_tokenizer = pickle.load(f)
 
 
 @app.route('/')
@@ -41,10 +47,10 @@ def index():
         else:
             if url:
                 results = "detected URL: {}".format(url)
-                summarizer = Summarizer(url=url)
+                summarizer = Summarizer(tfidf_tokenizer=tfidf_tokenizer, url=url)
             elif text:
                 results += "detected text: {}".format(text)
-                summarizer = Summarizer(text=text)
+                summarizer = Summarizer(tfidf_tokenizer=tfidf_tokenizer, text=text)
 
             if summary_method == "textrank_tfidf":
                 results = summarizer.textrank_summary(number_sentences)
@@ -57,7 +63,7 @@ def index():
                 title = summarizer.title
             return render_template("summary_result.html", title=title, results=results)
 
-    return render_template('index.html', errors=errors, results=results, url=url, text=text)
+    return render_template('index.html', errors=errors, results=results)
 
 
 # @app.route('/result', methods=['GET', 'POST'])
