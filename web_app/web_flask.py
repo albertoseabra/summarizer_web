@@ -40,7 +40,7 @@ def index():
             number_sentences = 3
         if (not url) & (not text):
             errors.append("You need to provide an URL or a text to summarize")
-            return render_template('index.html', errors=errors, results=results, url=url, text=text)
+            return render_template('index.html', errors=errors)
 
         else:
             if url:
@@ -49,6 +49,11 @@ def index():
             elif text:
                 # results += "detected text: {}".format(text)
                 summarizer = Summarizer(tfidf_tokenizer=tfidf_tokenizer, text=text)
+
+            if number_sentences > len(summarizer.sentences):
+                errors.append("You are asking for a summary of {} sentences but the original text only has {} "
+                              "sentences".format(number_sentences, len(summarizer.sentences)))
+                return render_template('index.html', errors=errors)
 
             if summary_method == "textrank_tfidf":
                 summary = summarizer.textrank_summary(number_sentences)
