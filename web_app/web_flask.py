@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, make_response, render_template, request, current_app, redirect, url_for
 import pickle
+from datetime import datetime
 import pymongo
 
 from summarizer import Summarizer
@@ -8,8 +9,7 @@ import config_file
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
 
-with open(app.config["TFIDF_TOKENIZER"], "rb") as f:
-    tfidf_tokenizer = pickle.load(f)
+tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
 
 
 @app.route('/')
@@ -62,7 +62,16 @@ def index():
             if summarizer.title:
                 title = summarizer.title
             else:
-                title = "No Title"
+                title = ""
+
+            # text_to_save = TextToStore(text=text,
+            #                            title=title,
+            #                            summary=summary,
+            #                            summary_type=summary_method,
+            #                            summary_size=number_sentences,
+            #                            date=datetime.now(),
+            #                            url=url)
+
             return render_template("summary_result.html", title=title, results=summary, key_words=key_words)
 
     return render_template('index.html', errors=errors)

@@ -3,8 +3,10 @@ import spacy
 import numpy as np
 from sklearn.cluster import KMeans
 import networkx as nx
+import re
 
 from utils import tokenizing_spacy
+
 nlp = spacy.load("en_core_web_md")
 
 
@@ -159,18 +161,18 @@ class Summarizer:
         prints the most import important n_words from the text
         """
         # stemming and transforming the text first
-        tokens = tokenizing_spacy(self.text)
+        # tokens = tokenizing_spacy(self.text)
 
-        vector = self.tfidf_tokenizer.transform(tokens)
+        vector = self.tfidf_tokenizer.transform([self.text])
 
         print('The top Words are: ')
         # gets the important stemmed words and find those words in the text to print the original
         words = []
         for index in vector.toarray()[0].argsort()[::-1][:n_words]:
-            words.append(self.tfidf_tokenizer.get_feature_names()[index])
+            word = self.tfidf_tokenizer.get_feature_names()[index]
 
-        #     indices = re.search('{}\S*'.format(str(stemmed_word)), self.text.lower()).span()
-        #     print(' {};'.format(self.text[indices[0]:indices[1]]), end=' ')
+            indices = re.search("{}\S*".format(str(word)), self.text.lower()).span()
+            # print(' {};'.format(self.text[indices[0]:indices[1]]), end=' ')
+            words.append(self.text[indices[0]:indices[1]])
 
         return words
-

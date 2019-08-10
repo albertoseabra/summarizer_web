@@ -17,7 +17,7 @@ def tokenizing_spacy(text):
     """
     text = clean_html(text)
     lemmatized_text = []
-    for token in nlp(" ".join(text.split("_"))):
+    for token in nlp(text):
         if (token.pos_ == 'PUNCT') | (token.lemma_ == "-PRON-") | (token.pos_ == 'X'):
             continue
         else:

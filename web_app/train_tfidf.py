@@ -1,5 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
+import pandas as pd
 
 import utils
 
@@ -22,12 +23,15 @@ def save_tfidf_tokenizer(tokenizer, path):
 
 
 def main(tokenizer_path, max_words):
-    corpus = ["you need a corpus to train it", "or better, you need a list of corpus to train", "just one more"]
+    # corpus = ["you need a corpus to train it", "or better, you need a list of corpus to train", "just one more"]
+
+    df = pd.read_csv(r'../data/data.csv', encoding='cp1252')
+    corpus = df.text.values
     tf = train_tfidf(corpus, max_words)
     save_tfidf_tokenizer(tokenizer=tf, path=tokenizer_path)
 
 
 if __name__ == '__main__':
     tokenizer_path = "./tokenizer/tfidf_tokenizer.pkl"
-    max_words = 25000
+    max_words = 75000
     main(tokenizer_path, max_words)
