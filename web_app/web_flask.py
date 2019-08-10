@@ -26,11 +26,9 @@ def about():
 def index():
     errors = []
     results = ""
-    url = ""
-    text = ""
     summary = []
-    key_words = []
-    summary_method = "embeddings"
+    key_words = ["test", "this"]
+    summary_method = "clustering"
     if request.method == "POST":
         # get url that the user has entered
         url = request.form['url']
@@ -46,29 +44,28 @@ def index():
 
         else:
             if url:
-                results = "detected URL: {}".format(url)
+                # results = "detected URL: {}".format(url)
                 summarizer = Summarizer(tfidf_tokenizer=tfidf_tokenizer, url=url)
             elif text:
-                results += "detected text: {}".format(text)
+                # results += "detected text: {}".format(text)
                 summarizer = Summarizer(tfidf_tokenizer=tfidf_tokenizer, text=text)
 
             if summary_method == "textrank_tfidf":
-                results = summarizer.textrank_summary(number_sentences)
+                summary = summarizer.textrank_summary(number_sentences)
             elif summary_method == "embeddings":
-                results = summarizer.doc_embedding_summary(number_sentences)
+                summary = summarizer.doc_embedding_summary(number_sentences)
             elif summary_method == "clustering":
-                results = summarizer.clustering_summary(number_sentences)
+                summary = summarizer.clustering_summary(number_sentences)
+
+            key_words = summarizer.key_words(5)
 
             if summarizer.title:
                 title = summarizer.title
-            return render_template("summary_result.html", title=title, results=results)
+            else:
+                title = "No Title"
+            return render_template("summary_result.html", title=title, results=summary, key_words=key_words)
 
-    return render_template('index.html', errors=errors, results=results)
-
-
-# @app.route('/result', methods=['GET', 'POST'])
-# def summary_result():
-#     return render_template('index.html', errors=errors, results=results, url=url, text=text)
+    return render_template('index.html', errors=errors)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -127,4 +124,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")

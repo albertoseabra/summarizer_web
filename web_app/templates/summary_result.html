@@ -12,6 +12,20 @@
         {% for res in results %}
         <div><p> <b>{{ res }}</b></p></div>
         {% endfor %}
+        <div>
+         <font color="green">
+             <h3>Key words in the text:</h3>
+             {% for word in key_words %}
+             <h3>{{ word }}</h3>
+             {% endfor %}
+         </font>
+        </div>
+
     </body>
+<h3>
+
+
+
+    <a href="/index">Go Back</a></h3>
 
 {% endblock content %}

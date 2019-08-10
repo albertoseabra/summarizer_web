@@ -154,14 +154,14 @@ class Summarizer:
 
         return [self.sentences[i] for i in order]
 
-    def key_words(self, n_words=10):
+    def key_words(self, n_words=5):
         """
         prints the most import important n_words from the text
         """
         # stemming and transforming the text first
         tokens = tokenizing_spacy(self.text)
 
-        vector = self.tfidf_tokenizer.transform([tokens])
+        vector = self.tfidf_tokenizer.transform(tokens)
 
         print('The top Words are: ')
         # gets the important stemmed words and find those words in the text to print the original
