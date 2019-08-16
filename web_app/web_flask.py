@@ -4,7 +4,7 @@ from mongoengine import connect
 
 from summarizer import Summarizer
 import config_file as config_file
-import text_save as text_save
+import mongo_models as mongo_models
 
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
@@ -68,14 +68,14 @@ def index():
             key_words = summarizer.key_words(5)
 
             rating = 5
-            text_to_store = text_save.TextToStore(text=summarizer.text,
-                                                  title=summarizer.title,
-                                                  url=summarizer.url,
-                                                  source=summarizer.source,
-                                                  summary=text_save.Summary(text=summary,
-                                                                            method=summary_method,
-                                                                            size=number_sentences,
-                                                                            rating=rating))
+            text_to_store = mongo_models.TextToStore(text=summarizer.text,
+                                                     title=summarizer.title,
+                                                     url=summarizer.url,
+                                                     source=summarizer.source,
+                                                     summary=mongo_models.Summary(text=summary,
+                                                                                  method=summary_method,
+                                                                                  size=number_sentences,
+                                                                                  rating=rating))
 
             text_to_store.save()
 
