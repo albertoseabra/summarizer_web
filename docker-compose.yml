@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   flask:
     build: .
@@ -7,9 +7,11 @@ services:
     volumes:
       - ./web_app:/web_app
     depends_on:
-      - mongo
+      - mongodb
+    links:
+      - mongodb
 
-  mongo:
+  mongodb:
     image: mongo:3.4
     ports:
       - "27017:27017"

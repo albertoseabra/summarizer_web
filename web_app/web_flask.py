@@ -10,8 +10,7 @@ app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
 
 connect(app.config["MONGODB_DATABASE"],
-        host=app.config["MONGODB_IP"],
-        port=27017)
+        host=app.config["MONGODB_IP"])
 
 tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
 
