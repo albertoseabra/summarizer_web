@@ -1,13 +1,17 @@
 from flask import Flask, jsonify, make_response, render_template, request, current_app, redirect, url_for
 import pickle
-from datetime import datetime
-import pymongo
+from mongoengine import connect
 
 from summarizer import Summarizer
-import config_file
+import config_file as config_file
+import text_save as text_save
 
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
+
+connect(app.config["MONGODB_DATABASE"],
+        host=app.config["MONGODB_IP"],
+        port=27017)
 
 tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
 
@@ -27,8 +31,8 @@ def index():
     errors = []
     results = ""
     summary = []
-    key_words = ["test", "this"]
-    summary_method = "clustering"
+    key_words = []
+    summary_method = "textrank_tfidf"
     if request.method == "POST":
         # get url that the user has entered
         url = request.form['url']
@@ -64,18 +68,19 @@ def index():
 
             key_words = summarizer.key_words(5)
 
-            title = summarizer.title
+            rating = 5
+            text_to_store = text_save.TextToStore(text=summarizer.text,
+                                                  title=summarizer.title,
+                                                  url=summarizer.url,
+                                                  source=summarizer.source,
+                                                  summary=text_save.Summary(text=summary,
+                                                                            method=summary_method,
+                                                                            size=number_sentences,
+                                                                            rating=rating))
 
+            text_to_store.save()
 
-            # text_to_save = TextToStore(text=text,
-            #                            title=title,
-            #                            summary=summary,
-            #                            summary_type=summary_method,
-            #                            summary_size=number_sentences,
-            #                            date=datetime.now(),
-            #                            url=url)
-
-            return render_template("summary_result.html", title=title, results=summary, key_words=key_words)
+            return render_template("summary_result.html", title=summarizer.title, results=summary, key_words=key_words)
 
     return render_template('index.html', errors=errors)
 
@@ -102,6 +107,7 @@ def contact():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 # @app.errorhandler(404)
 # def not_found(error):

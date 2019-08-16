@@ -16,8 +16,12 @@ class Summarizer:
         if text:
             self.text = text
             self.title = ""
+            self.url = ""
+            self.source = ""
 
         elif url is not None:
+            self.url = url
+            self.source = self.url.split("//")[1].split("/")[0]
             self.text, self.title = self.scrape_website()
 
         else:
@@ -75,7 +79,7 @@ class Summarizer:
 
         order = sorted(summary_indices)
 
-        return [self.sentences[i] for i in order]
+        return [self.sentences[i].text for i in order]
 
     def clustering_summary(self, number_of_sentences):
         """
@@ -109,7 +113,7 @@ class Summarizer:
 
         order = sorted(final_summary)
 
-        return [self.sentences[i] for i in order]
+        return [self.sentences[i].text for i in order]
 
     def create_graph(self):
         """
@@ -137,7 +141,7 @@ class Summarizer:
         """
         Calls the function create_graph to create the graph and calculates the Pagerank value
         of the nodes. Sorts the sentences in descending order of importance
-        Prints the most important sentences, depending of the number_sentences
+        returns the most important sentences, depending of the number_sentences
         """
         # better to start with a new weights list every time the summary is called
         self.sentence_weights = []
@@ -153,18 +157,15 @@ class Summarizer:
         # sorting by Rank value
         order = np.array(self.sentence_weights).argsort()[::-1][:number_of_sentences]
 
-        return [self.sentences[i] for i in order]
+        return [self.sentences[i].text for i in order]
 
     def key_words(self, n_words=5):
         """
-        prints the most import important n_words from the text
+        returns the most import important n_words from the text
         """
-        # stemming and transforming the text first
-        # tokens = tokenizing_spacy(self.text)
 
         vector = self.tfidf_tokenizer.transform([self.text])
 
-        print('The top Words are: ')
         # gets the important stemmed words and find those words in the text to print the original
         words = []
         for index in vector.toarray()[0].argsort()[::-1][:n_words]:
