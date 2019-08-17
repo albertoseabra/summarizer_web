@@ -7,6 +7,7 @@ class Summary(EmbeddedDocument):
     text = ListField(StringField())
     method = StringField(required=True)
     size = IntField(required=True)
+    key_words = ListField(StringField())
     rating = IntField()
 
 
