@@ -8,7 +8,7 @@ functionalities planed:
 * ~~summarize text based on a url~~ Done
 * ~~summarize text entered directly in the website~~ Done
 * ~~store the original text, summary, date, method used for summarization, etc, in mongodb~~ Done
-* possibility to give feedback of the quality of the summary
+* ~~possibility to give feedback of the quality of the summary~~ Done
 * Create summaries using a Sequence to Sequence model
 * Multidocument summarization
 * Multi-Reviews summarization

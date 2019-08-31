@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, make_response, render_template, request, current_app, redirect, url_for
+from flask import Flask, render_template, request, redirect, session
 import pickle
+import json
 from mongoengine import connect
 
 from summarizer import Summarizer
@@ -8,6 +9,8 @@ import mongo_models as mongo_models
 
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
+
+# app.secret_key = b'_5#y2L"aFs4Q8z\n\xec]/'
 
 
 @app.route('/')
@@ -77,7 +80,10 @@ def index():
 
             text_to_store.save()
 
-            return redirect("/results?id=" + str(text_to_store.id))
+            summary_id = json.dumps({"mongoid": str(text_to_store.id)})
+            session['id'] = summary_id
+
+            return redirect("/results")
 
     return render_template('index.html', errors=errors)
 
@@ -85,22 +91,17 @@ def index():
 @app.route('/results', methods=['GET', 'POST'])
 def results():
 
+    db_id = json.loads(session['id'])
+    db_id = db_id["mongoid"]
+
     if request.method == "POST":
-        data = request.data
-        print(data)
 
         rating = request.form['rating']
-        db_id = request.values.get('id')
 
-        print(rating)
-        print(db_id)
-
-
-        # mongo_models.TextToStore.objects(id=str(db_id)).update(summary__rating=rating)
+        mongo_models.TextToStore.objects(id=str(db_id)).update(summary__rating=rating)
 
         return render_template("thanks_rating.html")
 
-    db_id = request.args.get('id')
     db_summary = mongo_models.TextToStore.objects.get(id=str(db_id))
 
     return render_template("summary_result.html",
