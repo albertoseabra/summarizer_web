@@ -20,6 +20,11 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/how')
+def how_it_works():
+    return render_template('how_it_works.html')
+
+
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     errors = []
