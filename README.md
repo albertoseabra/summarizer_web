@@ -5,7 +5,7 @@
 a web page to create summaries of text    
 functionalities planed:    
 * ~~different summarization methods~~ Done
-* ~~summarize text based on a url~~~ Done
+* ~~summarize text based on a url~~ Done
 * ~~summarize text entered directly in the website~~ Done
 * ~~store the original text, summary, date, method used for summarization, etc, in mongodb~~ Done
 * possibility to give feedback of the quality of the summary
