@@ -1,17 +1,20 @@
-# work in progress
+## work in progress
 
 ### Working with dockerfiles and docker-compose, just need to docker-compose build and run
 
 a web page to create summaries of text    
 functionalities planed:    
-* different summarization methods
-* summarize text based on a url
-* summarize text entered directly in the website
-* store the original text, summary, date, method used for summarization, etc, in mongodb
+* ~~different summarization methods~~ Done
+* ~~summarize text based on a url~~~ Done
+* ~~summarize text entered directly in the website~~ Done
+* ~~store the original text, summary, date, method used for summarization, etc, in mongodb~~ Done
 * possibility to give feedback of the quality of the summary
+* Create summaries using a Sequence to Sequence model
+* Multidocument summarization
+* Multi-Reviews summarization
 
 
-## Concepts
+# Concepts
 
 ### TF-IDF
 The Term Frequency – Inverse Document Frequency is very widely used to represent the importance of the words. It tries to reflect how important a word is to a specific document in a corpus. If a word appears a lot in a document but it’s also very common in the remaining documents of the corpus it’s probably not a very important word. But if a word appears a lot in a document and it’s not very common in the corpus that means that this words is especially important for this specific document.
@@ -22,7 +25,7 @@ TF-IDF helps us have an idea of the most important words in a text, compared wit
 Another problem is the dimensionality of the data, with TF-IDF, like with one hot encoding, we need to have huge sparse vectors to represent our text. If we are working with 100k words we will have a vector of that size for each text where most of the values will be zero because the corresponding word doesnt appear in the text.
 
 Word embeddings solve these problems, each words will be represented by a vector, were the values where learned using a large corpus and are based on the context the words were used. Words used in similar ways, in similar contexts, will have similar representations, that way sentences with similar meaning will also have similar representations.
-There are several word embeddings models, Word2Vec and fastText are probably the most popular, they are available to download for free or you can also train your word embeddings with your data using the library [Gensim](https://radimrehurek.com/gensim/index.html)
+There are several word embeddings models, Word2Vec and fastText are probably the most popular, they are available to download for free or you can also train your word embeddings with your data using the library [Gensim](https://radimrehurek.com/gensim/index.html)    
 More information about word embeddings:
 https://www.tensorflow.org/tutorials/representation/word2vec
 
