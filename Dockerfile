@@ -14,4 +14,4 @@ COPY ./web_app /web_app
 
 EXPOSE 5000
 
-CMD [ "gunicorn", "web_flask:app" ]
+CMD [ "python", "web_flask.py" ]

@@ -10,10 +10,6 @@ import mongo_models as mongo_models
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
 
-connect(app.config["MONGODB_DATABASE"],
-        host=app.config["MONGODB_IP"])
-
-tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
 
 @app.route('/')
 def home():
@@ -150,4 +146,8 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run()
+    connect(app.config["MONGODB_DATABASE"],
+            host=app.config["MONGODB_IP"])
+
+    tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
+    app.run(host="0.0.0.0")
