@@ -14,4 +14,4 @@ COPY ./web_app /web_app
 
 EXPOSE 5000
 
-CMD [ "gunicorn", "-b", "0.0.0.0:5000", "web_flask:app" ]
+CMD [ "gunicorn", "web_flask:app" ]
