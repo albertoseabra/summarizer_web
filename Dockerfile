@@ -1,4 +1,7 @@
-FROM python:3.6
+FROM python:3.6-slim-stretch
+
+RUN apt update
+RUN apt install -y python3-dev gcc
 
 COPY ./requirements.txt /web_app/requirements.txt
 

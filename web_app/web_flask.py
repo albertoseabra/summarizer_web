@@ -10,8 +10,6 @@ import mongo_models as mongo_models
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
 
-# app.secret_key = b'_5#y2L"aFs4Q8z\n\xec]/'
-
 
 @app.route('/')
 def home():
