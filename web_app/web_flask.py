@@ -10,6 +10,10 @@ import mongo_models as mongo_models
 app = Flask(__name__)
 app.config.from_object(config_file.DevelopmentConfig())
 
+connect(app.config["MONGODB_DATABASE"],
+        host=app.config["MONGODB_IP"])
+
+tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
 
 @app.route('/')
 def home():
@@ -108,29 +112,6 @@ def results():
                            key_words=db_summary.summary.key_words)
 
 
-
-
-
-
-# @app.route('/contact', methods=['GET', 'POST'])
-# def contact():
-#     # recaptcha = current_app.config['RECAPTCHA_SITE_KEY']
-#     email_sent = False
-#
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         name = request.form['name']
-#         message = request.form['message']
-#         # recaptcha_response = request.form['g-recaptcha-response']
-#
-#         # send_email(app, to=current_app.config['ADMIN_EMAIL'], subject="Contact Form Flask Shop",
-#         #            body=email + " " + name + " " + message)
-#
-#         email_sent = True
-#
-#     return render_template("contact.html", email_sent=email_sent)
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -169,8 +150,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    connect(app.config["MONGODB_DATABASE"],
-            host=app.config["MONGODB_IP"])
-
-    tfidf_tokenizer = pickle.load(open(app.config["TFIDF_TOKENIZER"], "rb"))
-    app.run(host="0.0.0.0")
+    app.run()
