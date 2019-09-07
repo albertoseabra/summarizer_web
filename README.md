@@ -1,8 +1,6 @@
 ## work in progress
 
-### Working with dockerfiles and docker-compose, just need to docker-compose build and run
-
-a web page to create summaries of text    
+a web page to create summaries of text  
 functionalities planed:    
 * ~~different summarization methods~~ Done
 * ~~summarize text based on a url~~ Done
@@ -12,6 +10,11 @@ functionalities planed:
 * Create summaries using a Sequence to Sequence model
 * Multidocument summarization
 * Multi-Reviews summarization
+
+
+## How to try it:
+Need to have Docker installed and do `docker-compose build` and `docker-compose up`    
+after finishing just need to navigate to the page http://0.0.0.0:5000/index and you can use it
 
 
 # Concepts
