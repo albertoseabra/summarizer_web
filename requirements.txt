@@ -3,6 +3,6 @@ newspaper3k==0.2.6
 spacy==2.0.18
 mongoengine==0.18.2
 scikit-learn==0.21.2
-numpy==1.16.2
+numpy==1.22.0
 networkx==2.1
 gunicorn==19.9.0
